@@ -1,0 +1,17 @@
+version: '3.6'
+volumes:
+  postgres-data:
+    driver: local
+
+services:
+  db:
+    image: postgres:14.2
+    volumes:
+      - type: volume
+        source: postgres-data
+        target: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=github_issues_dev
+      - POSTGRES_PASSWORD=postgres
