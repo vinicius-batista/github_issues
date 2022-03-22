@@ -3,6 +3,8 @@ defmodule GithubIssuesWeb.AuthController do
   alias GithubIssues.Accounts.Auth
   alias GithubIssuesWeb.ErrorView
 
+  action_fallback GithubIssuesWeb.FallbackController
+
   def login(conn, %{"email" => email, "password" => password}) do
     with {:ok, user} <- Auth.find_user_and_check_password(email, password),
          {:ok, tokens} <- Auth.generate_tokens(user) do

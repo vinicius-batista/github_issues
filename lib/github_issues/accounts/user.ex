@@ -2,6 +2,7 @@ defmodule GithubIssues.Accounts.User do
   use Ecto.Schema
   import Ecto.Changeset
   alias GithubIssues.Accounts.{UserToken, Encryption}
+  alias GithubIssues.Webhooks.Webhook
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -11,6 +12,7 @@ defmodule GithubIssues.Accounts.User do
     field :hashed_password, :string, redact: true
     field :name, :string
     has_many(:tokens, UserToken, on_delete: :delete_all)
+    has_many(:webhooks, Webhook, on_delete: :delete_all)
 
     timestamps()
   end

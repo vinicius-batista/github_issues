@@ -56,10 +56,11 @@ defmodule GithubIssuesWeb.ConnCase do
   It returns an updated `conn`.
   """
   def log_in_user(conn, user) do
-    token = GithubIssues.Accounts.generate_user_session_token(user)
+    {:ok, token, _} =
+      user
+      |> GithubIssues.Guardian.encode_and_sign(%{}, token_type: :bearer)
 
     conn
-    |> Phoenix.ConnTest.init_test_session(%{})
-    |> Plug.Conn.put_session(:user_token, token)
+    |> Plug.Conn.put_req_header("authorization", "Bearer #{token}")
   end
 end

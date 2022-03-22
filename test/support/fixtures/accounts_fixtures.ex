@@ -4,13 +4,15 @@ defmodule GithubIssues.AccountsFixtures do
   entities via the `GithubIssues.Accounts` context.
   """
 
-  def unique_user_email, do: "user#{System.unique_integer()}@example.com"
-  def valid_user_password, do: "hello world!"
+  @valid_attrs %{
+    name: "some name",
+    password: "test"
+  }
 
   def valid_user_attributes(attrs \\ %{}) do
-    Enum.into(attrs, %{
-      email: unique_user_email(),
-      password: valid_user_password()
+    Enum.into(attrs, @valid_attrs)
+    |> Enum.into(%{
+      email: "email#{System.unique_integer()}@email.com"
     })
   end
 
@@ -18,7 +20,7 @@ defmodule GithubIssues.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> GithubIssues.Accounts.register_user()
+      |> GithubIssues.Accounts.create_user()
 
     user
   end
