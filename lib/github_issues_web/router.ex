@@ -12,21 +12,25 @@ defmodule GithubIssuesWeb.Router do
 
     plug Guardian.Plug.VerifyHeader, claims: %{"typ" => "bearer"}
     plug Guardian.Plug.EnsureAuthenticated
-    plug Guardian.Plug.LoadResource, allow_blank: true
+    plug Guardian.Plug.LoadResource
   end
 
   scope "/api/v1", GithubIssuesWeb do
     pipe_through :api
 
-    scope "auth" do
-      post "login", AuthController, :login
+    scope "/auth" do
+      post "/login", AuthController, :login
+    end
+  end
+
+  scope "/api/v1", GithubIssuesWeb do
+    pipe_through [:api, :ensure_auth]
+
+    scope "/auth" do
+      get "/me", AuthController, :me
     end
 
-    scope "auth" do
-      pipe_through :ensure_auth
-
-      get "me", AuthController, :me
-    end
+    resources "/webhooks", WebhookController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
