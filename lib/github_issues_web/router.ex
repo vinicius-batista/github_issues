@@ -31,6 +31,8 @@ defmodule GithubIssuesWeb.Router do
     end
 
     resources "/webhooks", WebhookController, except: [:new, :edit]
+
+    post "/issues/schedule", IssueController, :schedule
   end
 
   # Enables LiveDashboard only for development

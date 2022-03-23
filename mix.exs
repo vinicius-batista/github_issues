@@ -48,7 +48,8 @@ defmodule GithubIssues.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:email_checker, "~> 0.2"},
       {:guardian, "~> 2.2"},
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:oban, "~> 2.11"}
     ]
   end
 

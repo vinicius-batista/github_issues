@@ -38,6 +38,25 @@ defmodule GithubIssues.Webhooks do
   def get_webhook!(id), do: Repo.get!(Webhook, id)
 
   @doc """
+  Gets a single webhook by clauses
+
+  Raises `Ecto.NoResultsError` if the Webhook does not exist.
+
+  ## Examples
+
+      iex> get_webhook!(123)
+      %Webhook{}
+
+      iex> get_webhook!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_webhook_by(clauses \\ []), do: Repo.get_by(Webhook, clauses)
+
+  def get_repository_issues_webhook(user_id),
+    do: get_webhook_by(user_id: user_id, event: "repository_issues")
+
+  @doc """
   Creates a webhook.
 
   ## Examples

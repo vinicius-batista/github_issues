@@ -19,6 +19,16 @@ defmodule GithubIssuesWeb.FallbackController do
     conn
     |> put_status(:not_found)
     |> put_view(GithubIssuesWeb.ErrorView)
-    |> render(:"404")
+    |> render("404.json")
+  end
+
+  # This clause is an example of how to handle resources that cannot be found.
+  def call(conn, error) do
+    IO.inspect(error)
+
+    conn
+    |> put_status(:internal_server_error)
+    |> put_view(GithubIssuesWeb.ErrorView)
+    |> render("500.json")
   end
 end

@@ -15,9 +15,10 @@ defmodule GithubIssues.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: GithubIssues.PubSub},
       # Start the Endpoint (http/https)
-      GithubIssuesWeb.Endpoint
+      GithubIssuesWeb.Endpoint,
       # Start a worker by calling: GithubIssues.Worker.start_link(arg)
-      # {GithubIssues.Worker, arg}
+      GithubIssues.Scheduler.Server,
+      {Oban, oban_config()}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -32,5 +33,10 @@ defmodule GithubIssues.Application do
   def config_change(changed, _new, removed) do
     GithubIssuesWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  # Conditionally disable queues or plugins here.
+  defp oban_config do
+    Application.fetch_env!(:github_issues, Oban)
   end
 end

@@ -35,3 +35,5 @@ config :phoenix, :plug_init_mode, :runtime
 config :github_issues, GithubIssues.Guardian,
   issuer: "github_issues",
   secret_key: "VLdrxLia111e6M8I+v7OwLcsKdnI7MN1mFcWgJo7WfGnLdzK57JHa+bpDi5uM6r2"
+
+config :github_issues, Oban, queues: false, plugins: false
