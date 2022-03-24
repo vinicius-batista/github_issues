@@ -6,13 +6,21 @@ defmodule GithubIssuesWeb.WebhookController do
 
   action_fallback GithubIssuesWeb.FallbackController
 
+  plug :get_webhook when action in [:show, :update, :delete]
+
+  plug Bodyguard.Plug.Authorize,
+    policy: GithubIssues.Webhooks.Policy,
+    action: {Phoenix.Controller, :action_name},
+    user: {Guardian.Plug, :current_resource},
+    params: {__MODULE__, :extract_webhook},
+    fallback: GithubIssuesWeb.FallbackController
+
   def index(conn, _params) do
     user = Guardian.Plug.current_resource(conn)
     webhooks = Webhooks.list_webhooks(user.id)
     render(conn, "index.json", webhooks: webhooks)
   end
 
-  # TODO: improve validation
   def create(conn, %{"webhook" => webhook_params}) do
     user = Guardian.Plug.current_resource(conn)
 
@@ -25,7 +33,6 @@ defmodule GithubIssuesWeb.WebhookController do
     end
   end
 
-  # TODO: Implement bodyguard validation
   def show(conn, %{"id" => id}) do
     webhook = Webhooks.get_webhook!(id)
     render(conn, "show.json", webhook: webhook)
@@ -46,4 +53,11 @@ defmodule GithubIssuesWeb.WebhookController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  defp get_webhook(conn, _) do
+    assign(conn, :webhook, Webhooks.get_webhook!(conn.params["id"]))
+  end
+
+  def extract_webhook(%{assigns: %{webhook: webhook}}), do: webhook
+  def extract_webhook(_conn), do: nil
 end

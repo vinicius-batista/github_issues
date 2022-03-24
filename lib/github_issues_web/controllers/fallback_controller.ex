@@ -22,10 +22,14 @@ defmodule GithubIssuesWeb.FallbackController do
     |> render("404.json")
   end
 
-  # This clause is an example of how to handle resources that cannot be found.
-  def call(conn, error) do
-    IO.inspect(error)
+  def call(conn, {:error, :unauthorized}) do
+    conn
+    |> put_status(:forbidden)
+    |> put_view(GithubIssuesWeb.ErrorView)
+    |> render("403.json")
+  end
 
+  def call(conn, _error) do
     conn
     |> put_status(:internal_server_error)
     |> put_view(GithubIssuesWeb.ErrorView)

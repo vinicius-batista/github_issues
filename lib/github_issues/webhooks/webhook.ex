@@ -3,6 +3,8 @@ defmodule GithubIssues.Webhooks.Webhook do
   import Ecto.Changeset
   alias GithubIssues.Accounts.User
 
+  defdelegate authorize(action, user, params), to: GithubIssues.Webhooks.Policy
+
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "webhooks" do

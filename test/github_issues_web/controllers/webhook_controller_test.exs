@@ -89,8 +89,8 @@ defmodule GithubIssuesWeb.WebhookControllerTest do
     end
   end
 
-  defp create_webhook(_) do
-    webhook = webhook_fixture()
+  defp create_webhook(%{user: user}) do
+    webhook = webhook_fixture(user_id: user.id)
     %{webhook: webhook}
   end
 end

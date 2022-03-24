@@ -49,7 +49,8 @@ defmodule GithubIssues.MixProject do
       {:email_checker, "~> 0.2"},
       {:guardian, "~> 2.2"},
       {:httpoison, "~> 1.8"},
-      {:oban, "~> 2.11"}
+      {:oban, "~> 2.11"},
+      {:bodyguard, "~> 2.4"}
     ]
   end
 
