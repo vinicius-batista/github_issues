@@ -20,5 +20,6 @@ defmodule GithubIssues.Webhooks.Webhook do
     webhook
     |> cast(attrs, @all_fields)
     |> validate_required(@required_fields)
+    |> unique_constraint(:event, name: :webhooks_event_user_id_index)
   end
 end

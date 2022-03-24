@@ -44,6 +44,14 @@ defmodule GithubIssues.WebhooksTest do
       assert {:error, %Ecto.Changeset{}} = Webhooks.create_webhook(@invalid_attrs)
     end
 
+    test "create_webhook/1 should not allow two webhooks for same event to a suer" do
+      user = user_fixture()
+      valid_attrs = %{event: :repository_issues, url: "some url", user_id: user.id}
+
+      assert {:ok, %Webhook{}} = Webhooks.create_webhook(valid_attrs)
+      assert {:error, %Ecto.Changeset{}} = Webhooks.create_webhook(valid_attrs)
+    end
+
     test "update_webhook/2 with valid data updates the webhook" do
       webhook = webhook_fixture()
       update_attrs = %{event: :repository_issues, url: "some updated url"}

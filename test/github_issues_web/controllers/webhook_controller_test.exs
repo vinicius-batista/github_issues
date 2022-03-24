@@ -46,6 +46,12 @@ defmodule GithubIssuesWeb.WebhookControllerTest do
       conn = post(conn, Routes.webhook_path(conn, :create), webhook: @invalid_attrs)
       assert json_response(conn, 422)["errors"] != %{}
     end
+
+    test "renders errors when create same webhook to a user", %{conn: conn, user: user} do
+      GithubIssues.Webhooks.create_webhook(@create_attrs |> Map.put(:user_id, user.id))
+      conn = post(conn, Routes.webhook_path(conn, :create), webhook: @create_attrs)
+      assert json_response(conn, 422)["errors"] != %{}
+    end
   end
 
   describe "update webhook" do
