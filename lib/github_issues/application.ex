@@ -17,7 +17,6 @@ defmodule GithubIssues.Application do
       # Start the Endpoint (http/https)
       GithubIssuesWeb.Endpoint,
       # Start a worker by calling: GithubIssues.Worker.start_link(arg)
-      GithubIssues.Scheduler.Server,
       {Oban, oban_config()}
     ]
 

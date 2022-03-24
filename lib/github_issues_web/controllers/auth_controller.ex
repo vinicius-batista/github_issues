@@ -13,7 +13,8 @@ defmodule GithubIssuesWeb.AuthController do
       {:error, message} ->
         conn
         |> put_status(:unauthorized)
-        |> render(ErrorView, "401.json", message: message)
+        |> put_view(ErrorView)
+        |> render("401.json", message: message)
     end
   end
 
@@ -25,6 +26,7 @@ defmodule GithubIssuesWeb.AuthController do
   def auth_error(conn, {type, _reason}, _opts) do
     conn
     |> put_status(:unauthorized)
-    |> render(ErrorView, "401.json", code: type, message: "Invalid or missing access token")
+    |> put_view(ErrorView)
+    |> render("401.json", code: type, message: "Invalid or missing access token")
   end
 end
