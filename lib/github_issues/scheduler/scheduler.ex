@@ -1,6 +1,6 @@
 defmodule GithubIssues.Scheduler do
   alias GithubIssues.Scheduler.Worker
-  @time_to_wait 60 * 2
+  @time_to_wait 60 * 60 * 24
 
   def schedule_issues(issues, webhook) do
     %{event: :repository_issues, issues: issues, url: webhook.url}
