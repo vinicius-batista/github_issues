@@ -2,6 +2,8 @@ defmodule GithubIssues.Scheduler do
   alias GithubIssues.Scheduler.Worker
   @time_to_wait 60 * 60 * 24
 
+  def schedule_issues(_issues, nil), do: {:error, %{message: "No webhook found for this user"}}
+
   def schedule_issues(issues, webhook) do
     %{event: :repository_issues, issues: issues, url: webhook.url}
     |> Worker.new(schedule_in: @time_to_wait)

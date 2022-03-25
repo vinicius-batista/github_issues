@@ -1,6 +1,10 @@
 defmodule GithubIssuesWeb.ErrorView do
   use GithubIssuesWeb, :view
 
+  def render("400.json", %{message: message}) do
+    %{errors: %{detail: "Bad Request", message: message}}
+  end
+
   def render("400.json", _assigns) do
     %{errors: %{detail: "Bad Request"}}
   end
